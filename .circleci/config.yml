@@ -171,7 +171,7 @@ jobs:
           command: |
             export EC2_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-724e3a3' --output text)
             echo "Found IP: " $EC2_IP
-            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$EC2_IP" https://api.memstash.io/values/BackendUrl
+            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(echo $EC2_IP)" https://api.memstash.io/values/BackendUrl
             echo "[web]" > ./.circleci/ansible/inventory.txt
             echo $EC2_IP >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
@@ -200,6 +200,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
+            apt update
             apt install python3-pip
             pip3 install ansible
       - run:
