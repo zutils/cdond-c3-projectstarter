@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
+            npm install
             cd frontend
             npm i
             npm run build
@@ -116,7 +117,7 @@ jobs:
       - restore_cache:
           keys: [frontend-build5]
       # Your job code here
-      - run: npm install oauth-sign; npm install; cd frontend; npm audit --audit-level=critical
+      - run: npm install oauth-sign; npm install; cd frontend; npm install; npm audit --audit-level=critical
 
   scan-backend:
     docker:
