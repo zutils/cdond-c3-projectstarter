@@ -45,7 +45,7 @@
     - name: Git checkout
       ansible.builtin.git:
         repo: 'https://github.com/zutils/circleci-demo-javascript-express.git'
-        dest: ~/
+        dest: ~/circleci-demo-javascript-express
 
     - name: "Run Backend"
       raw: cd ~/circleci-demo-javascript-express/backend; pm2 start app.js
