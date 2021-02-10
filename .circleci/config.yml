@@ -63,7 +63,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       - run:
           name: Back-end build
           command: |
@@ -75,8 +75,8 @@ jobs:
           event: fail
           template: basic_fail_1
       - save_cache:
-          paths: [backend/node_modules, frontend/dist]
-          key: backend-build
+          paths: [backend/node_modules, backend/dist]
+          key: backend-build2
 
   test-frontend:
     docker:
@@ -106,7 +106,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       # Your job code here
       - run: 
           name: Run Npm Test
@@ -137,9 +137,9 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       # Your job code here
-      - run: cd backend; npm install; npm audit fix --audit-level=critical --force
+      - run: npm install; cd backend; npm install; npm audit fix --audit-level=critical --force
 
 
   deploy-infrastructure:
