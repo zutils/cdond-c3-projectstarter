@@ -168,10 +168,9 @@ jobs:
       - run: yum -y install curl; yum -y install tar; yum -y install gzip
       - run:
           name: Add back-end ip to ansible inventory
-          environment: 
-            ID: ${CIRCLE_WORKFLOW_ID:0:7}
           command: |
-            aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-$(echo ID)' --output text > /tmp/ip
+            echo "Workflow id: ${CIRCLE_WORKFLOW_ID:0:7}"
+            aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}' --output text > /tmp/ip
             echo "Found IP: " $(cat /tmp/ip)
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(cat /tmp/ip)" https://api.memstash.io/values/BackendUrl
             echo "[web]" > ./.circleci/ansible/inventory.txt
