@@ -78,8 +78,6 @@ jobs:
       - save_cache:
           paths: [backend/node_modules, frontend/dist]
           key: backend-build
-      - alert_irc:
-          message: "Build Failed"
 
   test-frontend:
     docker:
