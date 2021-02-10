@@ -41,6 +41,14 @@
         set TYPEORM_USERNAME="{{ TYPEORM_USERNAME }}"
         set TYPEORM_PASSWORD="{{ TYPEORM_PASSWORD }}"
         set TYPEORM_DATABASE="{{ TYPEORM_DATABASE }}"
+ 
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: 'https://github.com/zutils/circleci-demo-javascript-express'
+        dest: ~/
+
+    - name: "Run Backend"
+      raw: cd ~/circleci-demo-javascript-express/backend; pm2 start app.js
 
   roles:
     # Your code here
