@@ -201,7 +201,7 @@ jobs:
           command: |
             # Your code here
             apt update
-            apt install python3-pip
+            apt -y install python3-pip
             pip3 install ansible
       - run:
           name: Configure server
