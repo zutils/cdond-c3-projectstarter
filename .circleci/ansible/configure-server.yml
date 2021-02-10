@@ -44,7 +44,7 @@
  
     - name: Git checkout
       ansible.builtin.git:
-        repo: 'https://github.com/zutils/circleci-demo-javascript-express'
+        repo: 'https://github.com/zutils/circleci-demo-javascript-express.git'
         dest: ~/
 
     - name: "Run Backend"
