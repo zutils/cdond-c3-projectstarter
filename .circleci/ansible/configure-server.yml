@@ -21,7 +21,7 @@
 
     - name: "install nodejs Ansible."
       become: true
-      raw: apt install -y nodejs
+      raw: apt install -y nodejs npm
   
     - name: "install pm2 for Ansible."
       become: true
