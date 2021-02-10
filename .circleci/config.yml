@@ -171,11 +171,11 @@ jobs:
           environment: 
             ID: ${CIRCLE_WORKFLOW_ID:0:7}
           command: |
-            export EC2_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-$(echo $ID)' --output text)
-            echo "Found IP: " $EC2_IP
-            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(echo $EC2_IP)" https://api.memstash.io/values/BackendUrl
+            aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-$(echo ID)' --output text > /tmp/ip
+            echo "Found IP: " $(cat /tmp/ip)
+            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(cat /tmp/ip)" https://api.memstash.io/values/BackendUrl
             echo "[web]" > ./.circleci/ansible/inventory.txt
-            echo $EC2_IP >> ./.circleci/ansible/inventory.txt
+            cat /tmp/ip >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
