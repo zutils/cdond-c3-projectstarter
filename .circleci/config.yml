@@ -200,6 +200,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
+            apt install python3-pip
             pip3 install ansible
       - run:
           name: Configure server
