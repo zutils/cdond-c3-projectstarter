@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build5]
       - run:
           name: Build front-end
           command: |
@@ -47,8 +47,8 @@ jobs:
             npm i
             npm run build
       - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+          paths: [frontend/node_modules, frontend/dist]
+          key: frontend-build5
 
   build-backend:
     docker:
@@ -65,7 +65,7 @@ jobs:
             npm i
             npm run build
       - save_cache:
-          paths: [backend/node_modules]
+          paths: [backend/node_modules, frontend/dist]
           key: backend-build
 
   test-frontend:
@@ -77,7 +77,7 @@ jobs:
       - checkout 
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build5]
       # Your job code here
       - run: 
           name: Run Npm Test
@@ -114,7 +114,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build5]
       # Your job code here
       - run: npm install oauth-sign; cd frontend; npm audit --audit-level=critical
 
