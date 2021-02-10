@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build2]
+          keys: [frontend-build3]
       - run:
           name: Build front-end
           command: |
@@ -48,7 +48,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build2
+          key: frontend-build3
 
   build-backend:
     docker:
@@ -77,7 +77,7 @@ jobs:
       - checkout 
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build2]
+          keys: [frontend-build3]
       # Your job code here
       - run: 
           name: Run Npm Test
@@ -113,7 +113,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build2]
+          keys: [frontend-build3]
       # Your job code here
       - run: cd frontend; npm audit --audit-level=critical
 
