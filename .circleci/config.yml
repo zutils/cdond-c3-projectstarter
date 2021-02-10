@@ -165,16 +165,13 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-      - run: yum -y install curl
-      - run: 
-          name: Get EC2_IP ADDRESS
+      - run: yum -y install curl; yum -y install tar; yum -y install gzip
+      - run:
+          name: Add back-end ip to ansible inventory
           command: |
             export EC2_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-724e3a3' --output text)
             echo "Found IP: " $EC2_IP
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(echo EC2_IP)" https://api.memstash.io/values/BackendUrl
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
             echo "[web]" > ./.circleci/ansible/inventory.txt
             echo $EC2_IP >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
