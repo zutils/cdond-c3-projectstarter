@@ -186,7 +186,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:latest
+      - image: ansible/ansible:ubuntu1604 #python:latest
     environment:
       ANSIBLE_HOST_KEY_CHECKING: "false"
     steps:
@@ -198,13 +198,13 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            #apt update
-            #apt -y install python3-pip
-            pip3 install ansible
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+      #      # Your code here
+      #      #apt update
+      #      #apt -y install python3-pip
+      #      pip3 install ansible
       - run:
           name: Configure server
           command: |
