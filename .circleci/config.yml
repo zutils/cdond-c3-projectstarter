@@ -172,7 +172,7 @@ jobs:
             echo "Found IP " + $EC2_IP
             echo "[web]" > project/.circleci/ansible/inventory.txt
             echo $EC2_IP >> project/.circleci/ansible/inventory.txt
-            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "BackendUrl" https://api.memstash.io/values/$(echo EC2_IP)
+            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(echo EC2_IP)" https://api.memstash.io/values/BackendUrl
       - persist_to_workspace:
           root: ~/
           paths:
