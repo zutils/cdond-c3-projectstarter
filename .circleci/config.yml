@@ -171,7 +171,7 @@ jobs:
           command: |
             export EC2_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters 'Name=tag:Name,Values=backend-724e3a3' --output text)
             echo "Found IP: " $EC2_IP
-            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$(echo EC2_IP)" https://api.memstash.io/values/BackendUrl
+            curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$EC2_IP" https://api.memstash.io/values/BackendUrl
             echo "[web]" > ./.circleci/ansible/inventory.txt
             echo $EC2_IP >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
@@ -184,28 +184,29 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:latest
+      - image: ansible/ansible:latest
     environment:
       ANSIBLE_HOST_KEY_CHECKING: "false"
     steps:
       # Checkout code from git
       - checkout
       # Add ssh keys with fingerprint
-      #- add_ssh_keys: 
-      #    fingerprints: ["da:72:fb:fc:be:60:41:84:ef:5f:bc:f6:ed:f9:30:ff"]  
+      - add_ssh_keys: 
+          fingerprints: ["0c:88:ce:b8:35:93:62:74:b6:43:82:ab:ef:53:21:f5"]  
       # attach workspace
-      
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
             # Your code here
-            # pip3 install ansible
-            exit 1
+            pip3 install ansible
       - run:
           name: Configure server
           command: |
             # Your code here
-            exit 1
+            ansible-playbook .circleci/ansible/configure-server.yml --extra-vars "TYPEORM_CONNECTION=$TYPEORM_CONNECTION TYPEORM_ENTITIES=$TYPEORM_ENTITIES TYPEORM_HOST=$TYPEORM_HOST TYPEORM_PORT=$TYPEORM_PORT TYPEORM_USERNAME=$TYPEORM_USERNAME TYPEORM_PASSWORD=$TYPEORM_PASSWORD TYPEORM_DATABASE=$TYPEORM_DATABASE"
+
       # Here's where you will add some code to rollback on failure      
 
   run-migrations:
@@ -346,8 +347,8 @@ workflows:
           #filters:
           #  branches:
           #    only: [test-feature-branch]
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       #- run-migrations:
       #    requires: [configure-infrastructure]
       #- deploy-frontend:
