@@ -82,6 +82,7 @@ jobs:
       - run: 
           name: Run Npm Test
           command: |
+            npm install oauth-sign
             ls -la
             cd frontend
             npm run test
@@ -115,7 +116,7 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       # Your job code here
-      - run: cd frontend; npm audit --audit-level=critical
+      - run: npm install oauth-sign; cd frontend; npm audit --audit-level=critical; npm audit fix --audit-level=critical --force
 
   scan-backend:
     docker:
@@ -128,7 +129,7 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       # Your job code here
-      - run: cd backend; npm audit --audit-level=critical --force
+      - run: cd backend; npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:
