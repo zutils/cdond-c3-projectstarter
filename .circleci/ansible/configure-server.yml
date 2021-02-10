@@ -31,6 +31,17 @@
       become: true
       raw: npm install pm2 -g
 
+    - name: "Setup environment variables"
+      raw: |
+        set ENVIRONMENT="production"
+        set TYPEORM_CONNECTION="{{ TYPEORM_CONNECTION }}"
+        set TYPEORM_ENTITIES="{{ TYPEORM_ENTITIES }}"
+        set TYPEORM_HOST="{{ TYPEORM_HOST }}"
+        set TYPEORM_PORT="{{ TYPEORM_PORT }}"
+        set TYPEORM_USERNAME="{{ TYPEORM_USERNAME }}"
+        set TYPEORM_PASSWORD="{{ TYPEORM_PASSWORD }}"
+        set TYPEORM_DATABASE="{{ TYPEORM_DATABASE }}"
+
   roles:
     # Your code here
     - configure-server
