@@ -44,11 +44,11 @@
  
     - name: Git checkout
       ansible.builtin.git:
-        repo: 'https://github.com/zutils/circleci-demo-javascript-express.git'
-        dest: ~/circleci-demo-javascript-express
+        repo: 'https://github.com/zutils/cdond-c3-projectstarter.git'
+        dest: ~/cdond-c3-projectstarter
 
     - name: "Run Backend"
-      raw: cd ~/circleci-demo-javascript-express/backend; pm2 start app.js
+      raw: cd ~/cdond-c3-projectstarter/backend; pm2 start app.js
 
   roles:
     # Your code here
