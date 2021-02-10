@@ -48,7 +48,7 @@
         dest: ~/cdond-c3-projectstarter
 
     - name: "Run Backend"
-      raw: cd ~/cdond-c3-projectstarter/backend; pm2 start app.js
+      raw: cd ~/cdond-c3-projectstarter/backend; pm2 start "npm start"
 
   roles:
     # Your code here
