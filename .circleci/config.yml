@@ -241,15 +241,20 @@ jobs:
           name: Send migration results to memstash
           command: |
             # Your code here
+            export MIGRATION="0" # fail by default.
             if $(cat ./backend/migrations.txt | grep -q "has been executed successfully")
             then 
-               echo SUCCESS
                export MIGRATION="1"
-            else 
-               echo UNSUCCESS
-               export MIGRATION="0"
-               return 1
             fi
+
+            # Keep this if for now, but it should be removed.
+            if $(cat ./backend/migrations.txt | grep -q "No migrations are pending")
+            then 
+               export MIGRATION="1"
+            fi
+
+            if $MIGRATION == 0; then return 1; fi # Fail if no migrations where done.
+		
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure      
 
