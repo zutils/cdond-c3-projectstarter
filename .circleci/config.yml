@@ -71,6 +71,7 @@ jobs:
             cd backend
             npm i
             npm run build
+            ls -la
       - slack/notify:
           event: fail
           template: basic_fail_1
