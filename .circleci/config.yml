@@ -241,9 +241,16 @@ jobs:
           name: Send migration results to memstash
           command: |
             # Your code here
-            export MIGRATION="0"
+            if grep -q "has been executed successfully" <<< $(cat migrations.txt)
+            then 
+               echo SUCCESS
+               export MIGRATION="1"
+            else 
+               echo UNSUCCESS
+               export MIGRATION="0"
+               return 1
+            fi
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
-            exit 1
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
