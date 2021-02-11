@@ -41,7 +41,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: yum -y install curl; yum -y install tar; yum -y install gzip
       - restore_cache:
           keys: [frontend-build5]
       - run:
@@ -266,7 +265,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build5]
-      - run: yum -y install curl; yum -y install tar; yum -y install gzip
       - run:
           name: Get backend url
           command: |
@@ -297,7 +295,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum -y install curl; yum -y install tar; yum -y install gzip
+            # your code here
       - run:
           name: Deploy frontend objects
           command: |
