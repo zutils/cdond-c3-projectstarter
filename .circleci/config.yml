@@ -241,7 +241,7 @@ jobs:
           name: Send migration results to memstash
           command: |
             # Your code here
-            if grep -q "has been executed successfully" <<< $(cat migrations.txt)
+            if $(cat migrations.txt | grep -q "has been executed successfully")
             then 
                echo SUCCESS
                export MIGRATION="1"
