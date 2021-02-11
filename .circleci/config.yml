@@ -268,7 +268,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apt -y install nodejs
+            yum -y install nodejs
       - run:
           name: Get backend url
           command: |
