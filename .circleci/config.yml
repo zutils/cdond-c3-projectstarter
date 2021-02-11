@@ -307,11 +307,18 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:latest
+      - image: mullnerz/ansible-playbook:latest
+    environment:
+        ANSIBLE_HOST_KEY_CHECKING: "false"
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
+      - add_ssh_keys: 
+          fingerprints: ["0c:88:ce:b8:35:93:62:74:b6:43:82:ab:ef:53:21:f5"]  
       # attach workspace
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -320,6 +327,7 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
+            ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
 
   smoke-test:
@@ -406,9 +414,10 @@ workflows:
       #- run-migrations:
       #    requires: [configure-infrastructure]
       #- bake-backend-ip-into-frontend-code
-      - deploy-frontend
-      #    requires: [bake-backend-ip-into-frontend-code] #[run-migrations]
-      #- deploy-backend:
+      #     requires: [run-migrations]
+      #- deploy-frontend
+      #    requires: [bake-backend-ip-into-frontend-code]
+      - deploy-backend
       #    requires: [run-migrations]
       #- smoke-test:
       #    requires: [deploy-backend, deploy-frontend]

@@ -1,0 +1,5 @@
+---
+ name: "Deploy data"
+   ansible.builtin.copy:
+    src: ~/project/backend/dist
+    dest: /home/ubuntu/backend
