@@ -261,7 +261,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: aws-lambda-nodejs
+      - image: doctrine/nodejs-aws-cli:latest
     steps:
       # Checkout code from git
       - run:
