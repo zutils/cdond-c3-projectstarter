@@ -201,8 +201,8 @@ jobs:
       - run:
           name: Configure server
           command: |
-            echo $(printenv)
-            printenv >> ./backend/.env
+            echo $(export)
+            export >> ./backend/.env
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
 
       # Here's where you will add some code to rollback on failure      
