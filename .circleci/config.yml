@@ -336,7 +336,7 @@ jobs:
           command: |
             # your code here
             pwd   
-            ls -la backend/     
+            ls -la /home/circleci/project/backend/   
             cp -r backend/dist .circleci/ansible/roles/deploy/files
             ls -la .circleci/ansible/roles/deploy/files
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
