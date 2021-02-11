@@ -254,7 +254,7 @@ jobs:
             fi
 
             if $MIGRATION == 0; then return 1; fi # Fail if no migrations where done.
-
+		
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure      
 
@@ -268,6 +268,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apt -y install nodejs
       - run:
           name: Get backend url
           command: |
@@ -276,9 +277,18 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
+          name: Build one last time.
+          command: | 
+            npm i
+            cd backend
+            npm run build
+      - run:
           name: Deploy frontend objects
           command: |
-            # your code here
+            # your code here... copy files to the s3 bucket from ./dist
+            cd backend
+            aws s3 cp ./dist* s3://udapeople-h23jh52k34
+            
       # Here's where you will add some code to rollback on failure      
                     
   deploy-backend:
@@ -378,12 +388,12 @@ workflows:
           #filters:
           #  branches:
           #    only: [test-feature-branch]
-      - configure-infrastructure
-          #requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      #- deploy-frontend:
-      #    requires: [run-migrations]
+      #- configure-infrastructure
+      #    #requires: [deploy-infrastructure]
+      #- run-migrations:
+      #    requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
       #- deploy-backend:
       #    requires: [run-migrations]
       #- smoke-test:
