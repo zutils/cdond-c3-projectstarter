@@ -189,14 +189,6 @@ jobs:
       - image: mullnerz/ansible-playbook:latest #ansible/ansible:ubuntu1604 #python:latest
     environment:
       ANSIBLE_HOST_KEY_CHECKING: "false"
-      #TYPEORM_CONNECTION: $TYPEORM_CONNECTION
-      #TYPEORM_ENTITIES: $TYPEORM_ENTITIES
-      #TYPEORM_HOST: $TYPEORM_HOST 
-      #TYPEORM_PORT: $TYPEORM_PORT
-      #TYPEORM_USERNAME: $TYPEORM_USERNAME 
-      #TYPEORM_PASSWORD: $TYPEORM_PASSWORD 
-      #TYPEORM_DATABASE: $TYPEORM_DATABASE
-      #TYPEORM_MIGRATIONS: $TYPEORM_MIGRATIONS
     steps:
       # Checkout code from git
       - checkout
