@@ -317,8 +317,8 @@ jobs:
       - add_ssh_keys: 
           fingerprints: ["0c:88:ce:b8:35:93:62:74:b6:43:82:ab:ef:53:21:f5"]  
       # attach workspace
-      #- attach_workspace:
-      #    at: ~/
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           keys: [backend-build2]
       - run:
@@ -401,7 +401,7 @@ workflows:
   default:
     jobs:
       #- build-frontend
-      #- build-backend
+      - build-backend
       #- test-frontend:
       #    requires: [build-frontend]
       #- test-backend:
@@ -424,7 +424,7 @@ workflows:
       #- deploy-frontend
       #    requires: [bake-backend-ip-into-frontend-code]
       - deploy-backend
-      #    requires: [run-migrations]
+          requires: [build-backend] #run-migrations]
       #- smoke-test:
       #    requires: [deploy-backend, deploy-frontend]
       #- cloudfront-update:
