@@ -299,7 +299,8 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here... copy files to the s3 bucket from ./dist
-            aws s3 cp frontend/dist/ s3://udapeople-h23jh52k34
+            cd frontend
+            aws s3 sync ./dist s3://udapeople-h23jh52k34
             
       # Here's where you will add some code to rollback on failure      
                     
