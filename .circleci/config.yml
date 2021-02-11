@@ -317,8 +317,10 @@ jobs:
       - add_ssh_keys: 
           fingerprints: ["0c:88:ce:b8:35:93:62:74:b6:43:82:ab:ef:53:21:f5"]  
       # attach workspace
-      - attach_workspace:
-          at: ~/
+      #- attach_workspace:
+      #    at: ~/
+      - restore_cache:
+          keys: [backend-build2]
       - run:
           name: Install dependencies
           command: |
@@ -327,8 +329,9 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
-            pwd        
-            cp -r /root/project/backend/dist .circleci/ansible/roles/deploy/files
+            pwd   
+            ls -la backend/     
+            cp -r backend/dist .circleci/ansible/roles/deploy/files
             ls -la .circleci/ansible/roles/deploy/files
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
