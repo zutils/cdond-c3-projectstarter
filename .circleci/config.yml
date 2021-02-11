@@ -226,6 +226,7 @@ jobs:
           command: |
             # Your code here
             # Successful output will have "has been executed successfully"
+            npm install -g typescript
             cd backend
             npm run migrations > migrations.txt
             cat migrations.txt
