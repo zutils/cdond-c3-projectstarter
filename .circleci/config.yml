@@ -258,9 +258,9 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure      
 
-  bake-backend-ip-into-frontend-code:
+  bake-backend-ip-into-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image circlecl/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -301,7 +301,7 @@ jobs:
           command: |
             # your code here... copy files to the s3 bucket from ./dist
             cd frontend
-            aws s3 cp ./dist* s3://udapeople-h23jh52k34
+            aws s3 cp ./dist/* s3://udapeople-h23jh52k34
             
       # Here's where you will add some code to rollback on failure      
                     
@@ -406,9 +406,9 @@ workflows:
       #    #requires: [deploy-infrastructure]
       #- run-migrations:
       #    requires: [configure-infrastructure]
-      - bake-backend-ip-into-frontend-code
+      - bake-backend-ip
       - deploy-frontend:
-          requires: [bake-backend-ip-into-frontend-code] #[run-migrations]
+          requires: bake_backend_ip #[run-migrations]
       #- deploy-backend:
       #    requires: [run-migrations]
       #- smoke-test:
