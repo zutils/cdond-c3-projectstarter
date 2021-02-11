@@ -299,7 +299,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here... copy files to the s3 bucket from ./dist
-            aws s3 cp ./frontend/dist/ s3://udapeople-h23jh52k34
+            aws s3 cp frontend/dist/ s3://udapeople-h23jh52k34
             
       # Here's where you will add some code to rollback on failure      
                     
@@ -404,9 +404,9 @@ workflows:
       #    #requires: [deploy-infrastructure]
       #- run-migrations:
       #    requires: [configure-infrastructure]
-      - bake-backend-ip-into-frontend-code
-      - deploy-frontend:
-          requires: [bake-backend-ip-into-frontend-code] #[run-migrations]
+      #- bake-backend-ip-into-frontend-code
+      - deploy-frontend
+      #    requires: [bake-backend-ip-into-frontend-code] #[run-migrations]
       #- deploy-backend:
       #    requires: [run-migrations]
       #- smoke-test:
