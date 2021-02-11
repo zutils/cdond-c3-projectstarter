@@ -63,7 +63,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-$CIRCLE_WORKFLOW_ID]
       - run:
           name: Back-end build
           command: |
@@ -76,7 +76,7 @@ jobs:
           template: basic_fail_1
       - save_cache:
           paths: [backend/node_modules, backend/dist]
-          key: backend-build-${CIRCLE_WORKFLOW_ID:0:7}
+          key: backend-build-$CIRCLE_WORKFLOW_ID
 
   test-frontend:
     docker:
@@ -106,7 +106,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-$CIRCLE_WORKFLOW_ID]
       # Your job code here
       - run: 
           name: Run Npm Test
@@ -137,7 +137,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-$CIRCLE_WORKFLOW_ID]
       # Your job code here
       - run: npm install; cd backend; npm install; npm audit fix --audit-level=critical --force
 
@@ -225,7 +225,7 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: backend-build-${CIRCLE_WORKFLOW_ID:0:7}
+          keys: [backend-build-$CIRCLE_WORKFLOW_ID]
       - run:
           npm install typescript
       - run:
@@ -320,7 +320,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-$CIRCLE_WORKFLOW_ID]
       - run:
           name: Install dependencies
           command: |
