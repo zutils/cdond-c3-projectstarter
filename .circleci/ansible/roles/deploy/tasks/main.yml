@@ -1,5 +1,6 @@
----
- name: "Deploy data"
-   ansible.builtin.copy:
-    src: ~/project/backend/dist
+--- 
+- 
+  ansible.builtin.copy: 
     dest: /home/ubuntu/backend
+    src: ~/project/backend/dist
+  name: "Copy file with owner and permissions"
