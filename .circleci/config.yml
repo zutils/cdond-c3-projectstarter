@@ -234,14 +234,14 @@ jobs:
             # Your code here
             # Successful output will have "has been executed successfully"
             cd backend
-            npm run migrations > migrations.txt
+            npm run migrations > ./migrations.txt
             cat migrations.txt
             
       - run:
           name: Send migration results to memstash
           command: |
             # Your code here
-            if $(cat migrations.txt | grep -q "has been executed successfully")
+            if $(cat ./backend/migrations.txt | grep -q "has been executed successfully")
             then 
                echo SUCCESS
                export MIGRATION="1"
