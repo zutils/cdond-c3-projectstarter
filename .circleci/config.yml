@@ -268,8 +268,9 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            #yum update
-            #yum -y install nodejs
+            yum update
+            yum -y install nodejs
+            yum -y install npm
       - run:
           name: Get backend url
           command: |
