@@ -263,8 +263,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build5]
       - run:
           name: Get backend url
           command: |
@@ -281,7 +279,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [frontend/node_modules, frontend/dist]
-          key: frontend-build5
+          key: frontend-build-baked
 
   deploy-frontend:
     docker:
@@ -290,8 +288,9 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - run: yum -y install tar; yum -y install gzip
       - restore_cache:
-          keys: [frontend-build5]
+          keys: [frontend-build-baked]
       - run:
           name: Install dependencies
           command: |
