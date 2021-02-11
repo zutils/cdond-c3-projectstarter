@@ -2,5 +2,5 @@
 - 
   ansible.builtin.copy: 
     dest: /home/ubuntu/backend
-    src: ./dist
+    src: ./
   name: "Copy file with owner and permissions"
