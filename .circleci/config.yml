@@ -300,7 +300,7 @@ jobs:
           command: |
             # your code here... copy files to the s3 bucket from ./dist
             cd frontend
-            aws s3 sync ./dist s3://udapeople-h23jh52k34
+            aws s3 sync /home/circleci/project/frontend/dist s3://udapeople-h23jh52k34
             
       # Here's where you will add some code to rollback on failure      
                     
