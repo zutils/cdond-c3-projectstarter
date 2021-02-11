@@ -226,7 +226,9 @@ jobs:
           command: |
             # Your code here
             # Successful output will have "has been executed successfully"
-            npm run migrations
+            cd backend
+            npm run migrations > migrations.txt
+            cat migrations.txt
             
       - run:
           name: Send migration results to memstash
