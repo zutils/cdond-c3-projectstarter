@@ -327,6 +327,9 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
+            pwd
+            ls -la
+            ls -la backend
             cp -R ./backend/dist .circleci/ansible/roles/deploy/files
             ls -la .circleci/ansible/roles/deploy/files
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
