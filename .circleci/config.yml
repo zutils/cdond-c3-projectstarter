@@ -258,9 +258,9 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure      
 
-  bake-backend-ip-into-frontend:
+  bake-backend-ip-into-frontend-code:
     docker:
-      - image circlecl/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -406,9 +406,9 @@ workflows:
       #    #requires: [deploy-infrastructure]
       #- run-migrations:
       #    requires: [configure-infrastructure]
-      - bake-backend-ip
+      - bake-backend-ip-into-frontend-code
       - deploy-frontend:
-          requires: bake_backend_ip #[run-migrations]
+          requires: [bake-backend-ip-into-frontend-code] #[run-migrations]
       #- deploy-backend:
       #    requires: [run-migrations]
       #- smoke-test:
