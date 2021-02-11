@@ -261,15 +261,15 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      - image: aws-lambda-nodejs
     steps:
       # Checkout code from git
       - run:
           name: Install dependencies
           command: |
             # your code here
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            nvm install node
+            #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            #nvm install node
       - run:
           name: Get backend url
           command: |
