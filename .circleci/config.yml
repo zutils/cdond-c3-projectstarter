@@ -224,11 +224,12 @@ jobs:
       - restore_cache:
           keys: backend-build2
       - run:
+          npm install typescript
+      - run:
           name: Run migrations
           command: |
             # Your code here
             # Successful output will have "has been executed successfully"
-            npm install typescript
             cd backend
             npm run migrations > migrations.txt
             cat migrations.txt
