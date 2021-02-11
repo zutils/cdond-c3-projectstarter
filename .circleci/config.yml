@@ -201,8 +201,16 @@ jobs:
       - run:
           name: Configure server
           command: |
-            echo $(export)
-            export >> ./backend/.env
+            echo "" > ./backend/.env
+            "TYPEORM_ENTITIES=$TYPEORM_ENTITIES" >> ./backend/.env
+            "TYPEORM_HOST=$TYPEORM_HOST" >> ./backend/.env
+            "TYPEORM_PORT=$TYPEORM_PORT" >> ./backend/.env
+            "TYPEORM_USERNAME=$TYPEORM_USERNAME" >> ./backend/.env
+            "TYPEORM_PASSWORD=$TYPEORM_PASSWORD" >> ./backend/.env
+            "TYPEORM_DATABASE=$TYPEORM_DATABASE" >> ./backend/.env
+            "TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS" >> ./backend/.env
+            "TYPEORM_CONNECTION=$TYPEORM_CONNECTION" >> ./backend/.env
+            cat ./backend/.env
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
 
       # Here's where you will add some code to rollback on failure      
