@@ -217,10 +217,12 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: node:latest
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
+      - restore_cache:
+          keys: backend-build2
       - run:
           name: Run migrations
           command: |
