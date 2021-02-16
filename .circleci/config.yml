@@ -13,7 +13,6 @@ commands:
           name: Destroy dependencies
           when: on_fail
           command: | 
-            sudo apt -y install python3-pip
             sudo pip3 install awscli
       - run:
           name: Destroy environments
@@ -35,7 +34,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = curl -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            export SUCCESS = curl -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -180,6 +179,7 @@ jobs:
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - run: yum -y install curl; yum -y install tar; yum -y install gzip
+      - run: yum -y install python3-pip
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -213,6 +213,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
+      - run: yum -y install python3-pip
       - run:
           name: Configure server
           command: |
@@ -273,6 +274,7 @@ jobs:
 
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure 
+      - run: yum -y install python3-pip
       - destroy-environment-on-fail
       - revert-migrations-on-fail     
 
@@ -298,6 +300,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules, frontend/dist]
           key: frontend-build-baked
+      - run: yum -y install python3-pip
       - destroy-environment-on-fail
       - revert-migrations-on-fail
 
@@ -315,6 +318,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            yum -y install python3-pip
       - run:
           name: Deploy frontend objects
           command: |
@@ -348,6 +352,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            yum -y install python3-pip
       - run:
           name: Deploy backend
           command: |
