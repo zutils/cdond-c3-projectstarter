@@ -38,12 +38,6 @@ commands:
               npm install
               #Add revert code here. You can find this in the Getting Started section.
               npm run migrations:revert
-            fi
-		
-    Trigger rollback jobs if the smoke tests or any following jobs fail.
-    Revert the last migration (IF a new migration was applied) on the database to that it goes back to the way it was before. You can use that value you saved in MemStash.io to know if you should revert any migrations.
-
-
               exit 1
             fi
             
@@ -275,8 +269,8 @@ jobs:
 
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure 
-     - destroy-environment-on-fail
-     - revert-migrations-on-fail     
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail     
 
   bake-backend-ip-into-frontend-code:
     docker:
