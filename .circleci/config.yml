@@ -213,7 +213,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run: yum -y install python3-pip
+      - run: apt -y install python3-pip
       - run:
           name: Configure server
           command: |
