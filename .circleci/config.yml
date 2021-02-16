@@ -14,7 +14,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            sudo yum -i install python3-pip
+            sudo apt -i install python3-pip
             sudo pip3 install awscli
             aws cloudformation delete-stack \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
