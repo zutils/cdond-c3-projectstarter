@@ -344,25 +344,42 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image 
-      - image: ubuntu:latest
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
+      - checkout
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+      #      # your code here
       - run:
           name: Get backend url
           command: |
-            # your code here
+            export BACKEND_IP="$(curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/BackendUrl)"
+            export API_URL="http://${BACKEND_IP}:3030/api/status"
+            echo "${API_URL}"
       - run:
           name: Backend smoke test.
           command: |
             # your code here
+            if curl -s -o /dev/null http://52.35.203.103:3030/api/status
+            then
+            return 0
+            else
+            return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
             # your code here
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"
+
+            if curl -s ${URL} | grep "Welcome"
+            then
+            return 1
+            else
+            return 0
+            fi
       # Here's where you will add some code to rollback on failure  
 
   cloudfront-update:
@@ -428,9 +445,9 @@ workflows:
       #     requires: [run-migrations]
       #- deploy-frontend
       #    requires: [bake-backend-ip-into-frontend-code]
-      - deploy-backend:
-          requires: [build-backend] #run-migrations]
-      #- smoke-test:
+      #- deploy-backend:
+      #    requires: [build-backend] #run-migrations]
+      - smoke-test:
       #    requires: [deploy-backend, deploy-frontend]
       #- cloudfront-update:
       #    requires: [smoke-test]
