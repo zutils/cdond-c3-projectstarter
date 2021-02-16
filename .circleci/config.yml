@@ -4,7 +4,7 @@ orbs:
   slack: circleci/slack@4.2.1
 
 commands:
-  destroy-environment:
+  destroy-environment-on-fail:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
       # Add parameter here   
@@ -14,9 +14,14 @@ commands:
           when: on_fail
           command: |
             # Your code here
+            aws cloudformation delete-stack \
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+ 
             exit 1
 
-  revert-migrations:
+  revert-migrations-on-fail:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
       # Add parameter here     
@@ -26,12 +31,19 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS = curl -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
+              cd ~/project/backend
+              npm install
+              #Add revert code here. You can find this in the Getting Started section.
+              npm run migrations:revert
+            fi
+		
+    Trigger rollback jobs if the smoke tests or any following jobs fail.
+    Revert the last migration (IF a new migration was applied) on the database to that it goes back to the way it was before. You can use that value you saved in MemStash.io to know if you should revert any migrations.
+
+
               exit 1
             fi
             
@@ -186,6 +198,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
+      - destroy-environment-on-fail
 
   configure-infrastructure:
     docker:
@@ -217,9 +230,9 @@ jobs:
             echo "TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS" >> ./backend/.env
             echo "TYPEORM_CONNECTION=$TYPEORM_CONNECTION" >> ./backend/.env
             cat ./backend/.env
-            ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
-
+            ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml 
       # Here's where you will add some code to rollback on failure      
+      - destroy-environment-on-fail
 
   run-migrations:
     docker:
@@ -261,7 +274,9 @@ jobs:
             if $MIGRATION == 0; then return 1; fi # Fail if no migrations where done.
 
             curl -H "Content-Type: text/plain" -H "token: 7f92f427-54ab-40ca-878a-ff9f059d253a" --request PUT --data "$MIGRATION" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
-     # Here's where you will add some code to rollback on failure      
+     # Here's where you will add some code to rollback on failure 
+     - destroy-environment-on-fail
+     - revert-migrations-on-fail     
 
   bake-backend-ip-into-frontend-code:
     docker:
@@ -285,6 +300,8 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules, frontend/dist]
           key: frontend-build-baked
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail
 
   deploy-frontend:
     docker:
@@ -307,7 +324,9 @@ jobs:
             cd frontend
             aws s3 sync /home/circleci/project/frontend/dist s3://udapeople-h23jh52k34
             
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure    
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail  
                     
   deploy-backend:
     docker:
@@ -340,6 +359,8 @@ jobs:
             ls -la .circleci/ansible/roles/deploy/files
             ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail
 
   smoke-test:
     docker:
@@ -371,6 +392,8 @@ jobs:
 
             if curl -s ${URL} | grep "Welcome"; then exit 1; else exit 0; fi
       # Here's where you will add some code to rollback on failure  
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail
 
   cloudfront-update:
     docker:
@@ -387,6 +410,8 @@ jobs:
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure  
+      - destroy-environment-on-fail
+      - revert-migrations-on-fail
 
 cleanup:
     docker:
