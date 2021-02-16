@@ -447,8 +447,8 @@ workflows:
       #    requires: [build-backend]
       #- scan-frontend:
       #    requires: [build-frontend]
-      #- deploy-infrastructure:
-      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - deploy-infrastructure:
+          requires: [build-backend] #[test-frontend, test-backend, scan-frontend, scan-backend]
           #filters:
           #  branches:
           #    only: [test-feature-branch]
@@ -463,7 +463,7 @@ workflows:
       #- deploy-backend:
       #    requires: [build-backend] #run-migrations]
       - smoke-test:
-           requires: [build-backend] #run-migrations] # Remove this line for full release
+           requires: [deploy-infrastructure] #run-migrations] # Remove this line for full release
       #    requires: [deploy-backend, deploy-frontend]
       #- cloudfront-update:
       #    requires: [smoke-test]
