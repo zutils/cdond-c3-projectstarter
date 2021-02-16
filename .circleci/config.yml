@@ -362,7 +362,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # your code here
-            if curl -s -o /dev/null http://52.35.203.103:3030/api/status; then exit 0; else exit 1; fi
+            if curl -s http://52.35.203.103:3030/api/status; then exit 0; else exit 1; fi
       - run:
           name: Frontend smoke test.
           command: |
