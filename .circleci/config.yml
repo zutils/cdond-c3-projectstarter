@@ -351,6 +351,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apk add openssh-client
       - run:
           name: Deploy backend
           command: |
@@ -361,7 +362,7 @@ jobs:
             echo "PWD: " $(pwd)
             echo "Inventory: "
             echo "[ssh_connection]" > ansible.cfg                     # Prevent hang-ups
-            echo "ssh_args = -o ServerAliveInterval=10 -o ControlMaster=auto -o ControlPersist=60s" >> ansible.cfg # Prevent hang-ups
+            echo "scp_if_ssh=True" >> ansible.cfg # Prevent hang-ups
             cat ./.circleci/ansible/inventory.txt
             ansible-playbook -v -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
             echo "Playbook finished."
