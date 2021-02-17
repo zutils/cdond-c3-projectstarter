@@ -361,7 +361,7 @@ jobs:
             echo "PWD: " $(pwd)
             echo "Inventory: "
             cat ./.circleci/ansible/inventory.txt
-            ansible-playbook -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            ansible-playbook -v -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
       - destroy-environment-on-fail
       - revert-migrations-on-fail
