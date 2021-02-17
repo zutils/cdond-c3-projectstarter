@@ -3,8 +3,3 @@
   copy: 
     dest: /home/ubuntu/
     src: ./dist
-    register: output
-
-- name: Print output
-  debug:
-    msg: "Copy Output: {{ output.stdout }}"
