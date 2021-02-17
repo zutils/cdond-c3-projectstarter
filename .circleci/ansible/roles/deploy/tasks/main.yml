@@ -1,6 +1,10 @@
 --- 
-- 
-  ansible.builtin.copy: 
+- name: "Copy file with owner and permissions"
+  copy: 
     dest: /home/ubuntu/
     src: ./dist
-  name: "Copy file with owner and permissions"
+    register: output
+
+- name: Print output
+  debug:
+    msg: "Copy Output: {{ output.stdout }}"

@@ -357,11 +357,12 @@ jobs:
             # your code here
             pwd   
             cp -r /home/circleci/project/backend/dist .circleci/ansible/roles/deploy/files
-            ls -la .circleci/ansible/roles/deploy/files
+            ls -la .circleci/ansible/roles/deploy/files/dist
             echo "PWD: " $(pwd)
             echo "Inventory: "
             cat ./.circleci/ansible/inventory.txt
             ansible-playbook -v -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            echo "Playbook finished."
       # Here's where you will add some code to rollback on failure  
       - destroy-environment-on-fail
       - revert-migrations-on-fail
