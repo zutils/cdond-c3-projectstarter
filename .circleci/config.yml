@@ -34,7 +34,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            export SUCCESS="curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}"
+            export SUCCESS="$(curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})"
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -361,7 +361,7 @@ jobs:
             echo "PWD: " $(pwd)
             echo "Inventory: "
             echo "[ssh_connection]" > ansible.cfg                     # Prevent hang-ups
-            echo "ssh_args = -o ServerAliveInterval=10" >> ansible.cfg # Prevent hang-ups
+            echo "ssh_args = -o ServerAliveInterval=10 -o ControlMaster=auto -o ControlPersist=60s" >> ansible.cfg # Prevent hang-ups
             cat ./.circleci/ansible/inventory.txt
             ansible-playbook -v -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
             echo "Playbook finished."
