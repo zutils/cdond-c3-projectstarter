@@ -361,8 +361,8 @@ jobs:
             ls -la .circleci/ansible/roles/deploy/files/dist
             echo "PWD: " $(pwd)
             echo "Inventory: "
-            echo "[ssh_connection]" > ansible.cfg                     # Prevent hang-ups
-            echo "ssh_args = -o ServerAliveInterval=10 -o ControlMaster=auto -o ControlPersist=60s" >> ansible.cfg # Prevent hang-ups
+            #echo "[ssh_connection]" > ansible.cfg                     # Prevent hang-ups
+            #echo "ssh_args = -o ServerAliveInterval=10 -o ControlMaster=auto -o ControlPersist=60s" >> ansible.cfg # Prevent hang-ups
             cat ./.circleci/ansible/inventory.txt
             ansible-playbook -vvv -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
             echo "Playbook finished."
