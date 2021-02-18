@@ -352,17 +352,15 @@ jobs:
           command: |
             # your code here
             apk add openssh-client
+            apk install zip
       - run:
           name: Deploy backend
           command: |
             # your code here
-            pwd   
-            cp -r /home/circleci/project/backend/dist .circleci/ansible/roles/deploy/files
+            zip -r .circleci/ansible/roles/deploy/files/backend.zip /home/circleci/project/backend/dist
             ls -la .circleci/ansible/roles/deploy/files/dist
             echo "PWD: " $(pwd)
             echo "Inventory: "
-            #echo "[ssh_connection]" > ansible.cfg                     # Prevent hang-ups
-            #echo "ssh_args = -o ServerAliveInterval=10 -o ControlMaster=auto -o ControlPersist=60s" >> ansible.cfg # Prevent hang-ups
             cat ./.circleci/ansible/inventory.txt
             ansible-playbook -vvv -i ./.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
             echo "Playbook finished."
@@ -377,10 +375,11 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      #- run:
-      #    name: Install dependencies
-      #    command: |
-      #      # your code here
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            npm install python3
       - run:
           name: Get backend url
           command: |
@@ -391,7 +390,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # your code here
-            if curl -s http://52.35.203.103:3030/api/status; then exit 0; else exit 1; fi
+            if $(curl -s http://52.35.203.103:3030/api/status); then exit 0; else exit 1; fi
       - run:
           name: Frontend smoke test.
           command: |
