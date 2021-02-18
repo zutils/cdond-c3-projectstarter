@@ -445,11 +445,9 @@ jobs:
           command: |
             # your code here
             export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            echo OldWorkflow Id: "${OldWorkflowID}"
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-
-            #export OldWorkflowID="the id here"
-            #export STACKS=[] #put the list of stacks here
-            exit 1
+            echo Stacks: "${STACKS}"
       - run:
           name: Remove old stacks and files
           command: |
