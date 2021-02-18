@@ -244,7 +244,7 @@ jobs:
             - backend-build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - run:
           npm install typescript
-      - run: npm --update install python3 npm nghttp2-dev
+      - run: npm --update install python3 npm
       - run:
           name: Run migrations
           command: |
