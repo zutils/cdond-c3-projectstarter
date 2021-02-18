@@ -2,4 +2,4 @@
 - name: "Copy file with owner and permissions"
   copy: 
     dest: /home/ubuntu/
-    src: ./dist
+    src: ./
