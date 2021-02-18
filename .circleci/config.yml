@@ -456,7 +456,7 @@ jobs:
           name: Remove old stacks and files
           command: |
             # While 'udapeople-' stacks exist that are not our permanent production frontend stack or our current backend stack, remove them!
-            while $STACK != "None"
+            while [ "$STACK" != "None" ]
             do
               echo Removing Stack $STACK
               aws cloudformation delete-stack --stack-name "$STACK"
