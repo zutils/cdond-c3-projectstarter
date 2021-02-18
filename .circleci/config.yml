@@ -37,6 +37,7 @@ commands:
             export SUCCESS="$(curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})"
             if(( $SUCCESS==1 )); 
             then
+              apk add --update npm
               cd ~/project/backend
               npm install
               #Add revert code here. You can find this in the Getting Started section.
