@@ -282,7 +282,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: npm --update install python3 npm nghttp2-dev
+      - run: npm --update install python3 npm
       - run:
           name: Get backend url
           command: |
