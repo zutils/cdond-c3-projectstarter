@@ -450,14 +450,14 @@ jobs:
             echo ProductionFrontend Id: "${ProductionFrontend}"
 
             # Get only one stack that exists
-            export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}'].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack: "${STACK}"
       - run:
           name: Remove old stacks and files
           command: |
             # While 'udapeople-' stacks exist that are not our permanent production frontend stack or our current backend stack, remove them!
-            echo Comparing ${STACK} to "None"
-            if [ "${STACK} == "" ]
+            echo Comparing '${STACK}' to "None"
+            if [ "${STACK}" == "" ]
             then
               echo "Stacks not found! If stacks exist, this may be an error."
               return 0
@@ -467,15 +467,15 @@ jobs:
             do
               echo Removing Stack ${STACK}
               aws cloudformation delete-stack --stack-name "${STACK}"
-              export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}'].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+              export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               echo Found Stack: "${STACK}"            
             done            
 
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
+      #- build-frontend
+      #- build-backend
       #- test-frontend:
       #    requires: [build-frontend]
       #- test-backend:
@@ -484,24 +484,24 @@ workflows:
       #    requires: [build-backend]
       #- scan-frontend:
       #    requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [build-frontend, build-backend] #[test-frontend, test-backend, scan-frontend, scan-backend]
-          #filters:
-            #branches:
-            #  only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - bake-backend-ip-into-frontend-code:
-           requires: [run-migrations]
-      - deploy-frontend:
-          requires: [bake-backend-ip-into-frontend-code]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      #- deploy-infrastructure:
+      #    requires: [build-frontend, build-backend] #[test-frontend, test-backend, scan-frontend, scan-backend]
+      #    #filters:
+      #      #branches:
+      #      #  only: [master]
+      #- configure-infrastructure:
+      #    requires: [deploy-infrastructure]
+      #- run-migrations:
+      #    requires: [configure-infrastructure]
+      #- bake-backend-ip-into-frontend-code:
+      #     requires: [run-migrations]
+      #- deploy-frontend:
+      #    requires: [bake-backend-ip-into-frontend-code]
+      #- deploy-backend:
+      #    requires: [run-migrations]
+      #- smoke-test:
+      #   requires: [deploy-backend, deploy-frontend]
+      #- cloudfront-update:
+      #    requires: [smoke-test]
+      - cleanup
+      #    requires: [cloudfront-update]
