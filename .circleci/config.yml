@@ -381,7 +381,7 @@ jobs:
           command: |
             # your code here
             apt update
-            apt -y install python3-pip
+            apt -y install python3-pip curl
       - run:
           name: Get backend url
           command: |
