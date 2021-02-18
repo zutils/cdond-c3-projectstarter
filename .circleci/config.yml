@@ -434,7 +434,7 @@ jobs:
       - destroy-environment-on-fail
       - revert-migrations-on-fail
 
-cleanup:
+  cleanup:
     docker:
       # Docker image here
       - image: amazon/aws-cli
