@@ -456,10 +456,17 @@ jobs:
           name: Remove old stacks and files
           command: |
             # While 'udapeople-' stacks exist that are not our permanent production frontend stack or our current backend stack, remove them!
-            while [ "$STACK" != "None" ]
+            echo Comparing ${STACK} to "None"
+            if [ "${STACK} == "" ]
+            then
+              echo "Stacks not found! If stacks exist, this may be an error."
+              return 0
+            fi
+
+            while [ "${STACK}" != "None" ]
             do
-              echo Removing Stack $STACK
-              aws cloudformation delete-stack --stack-name "$STACK"
+              echo Removing Stack ${STACK}
+              aws cloudformation delete-stack --stack-name "${STACK}"
               export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}'].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               echo Found Stack: "${STACK}"            
             done            
