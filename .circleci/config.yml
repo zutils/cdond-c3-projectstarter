@@ -352,7 +352,7 @@ jobs:
           command: |
             # your code here
             apk add openssh-client
-            apk install zip
+            apk add zip
       - run:
           name: Deploy backend
           command: |
