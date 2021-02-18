@@ -450,12 +450,12 @@ jobs:
             echo ProductionFrontend Id: "${ProductionFrontend}"
 
             # Get only one stack that exists
-            export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            export STACK=$(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text) 
             echo Stack: "${STACK}"
       - run:
           name: Remove old stacks and files
           command: |
-            export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            export STACK=$(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
             echo Stack: "${STACK}"
             echo Comparing "${STACK}" to "None"
             if [ "${STACK}" == "" ]
@@ -469,7 +469,8 @@ jobs:
             do
               echo Removing Stack ${STACK}
               aws cloudformation delete-stack --stack-name "${STACK}"
-              export STACK=($(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+              echo Querying for more Stacks...
+              export STACK=$(aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'udapeople-') && StackName != 'udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}']|[0].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
               echo Found Stack: "${STACK}"            
             done            
 
