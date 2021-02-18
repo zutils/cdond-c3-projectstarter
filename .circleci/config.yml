@@ -380,6 +380,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apt update
             apt -y install python3-pip
       - run:
           name: Get backend url
