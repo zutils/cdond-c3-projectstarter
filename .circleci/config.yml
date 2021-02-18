@@ -358,7 +358,7 @@ jobs:
           command: |
             # your code here
             zip -r .circleci/ansible/roles/deploy/files/backend.zip /home/circleci/project/backend/dist
-            ls -la .circleci/ansible/roles/deploy/files/dist
+            ls -la .circleci/ansible/roles/deploy/files/
             echo "PWD: " $(pwd)
             echo "Inventory: "
             cat ./.circleci/ansible/inventory.txt
