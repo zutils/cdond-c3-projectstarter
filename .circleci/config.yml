@@ -13,7 +13,7 @@ commands:
           name: Destroy dependencies
           when: on_fail
           command: | 
-            sudo pip install awscli
+            pip install awscli
       - run:
           name: Destroy environments
           when: on_fail
@@ -37,7 +37,6 @@ commands:
             export SUCCESS="$(curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})"
             if(( $SUCCESS==1 )); 
             then
-              apk add --update npm nghttp2-dev
               cd ~/project/backend
               npm install
               #Add revert code here. You can find this in the Getting Started section.
@@ -245,7 +244,7 @@ jobs:
             - backend-build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - run:
           npm install typescript
-      - run: npm install python3
+      - run: npm --update install python3 npm nghttp2-dev
       - run:
           name: Run migrations
           command: |
@@ -283,7 +282,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: npm install python3
+      - run: npm --update install python3 npm nghttp2-dev
       - run:
           name: Get backend url
           command: |
@@ -410,14 +409,13 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
+      - checkout
+      - run: yum -y install curl; yum -y install tar; yum -y install gzip
+      - run: yum -y install python3-pip
       - run:
           name: Update cloudfront distribution
           command: |
-            export OldWorkflowID=$aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
 
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPONENT --no-paginate --output text))
 
