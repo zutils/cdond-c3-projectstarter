@@ -420,11 +420,13 @@ jobs:
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
 
             echo OldWorkflow Id: "${OldWorkflowID}"
+            echo STACKS: "${STACKS}"
 
             aws cloudformation deploy --template-file .circleci/files/cloudfront.yml --stack-name udapeople-cloudfront --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" --tags project=udapeople &
 
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
+              echo Removing old workflow!
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
@@ -451,11 +453,12 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
+            # Remove the previous backend stack if one exists!
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               # your code here
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              #aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              #aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive # What! This our frontend production!
             fi
             
 
