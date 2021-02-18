@@ -437,15 +437,18 @@ jobs:
 cleanup:
     docker:
       # Docker image here
-      - image: ubuntu:latest
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - run:
           name: Get old stack workflow id
           command: |
             # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
+            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+
+            #export OldWorkflowID="the id here"
+            #export STACKS=[] #put the list of stacks here
             exit 1
       - run:
           name: Remove old stacks and files
@@ -453,6 +456,8 @@ cleanup:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               # your code here
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             fi
             
 
@@ -471,6 +476,9 @@ workflows:
       #    requires: [build-frontend]
       - deploy-infrastructure:
           requires: [build-frontend, build-backend] #[test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [master]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
@@ -485,5 +493,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      #- cleanup:
-      #    requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
