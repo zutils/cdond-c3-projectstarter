@@ -3,3 +3,6 @@
   copy: 
     dest: /home/ubuntu/
     src: ./
+
+- name: "Start Server"
+  raw: cd ~/cdond-c3-projectstarter/backend/; pm2 start npm -- run start
