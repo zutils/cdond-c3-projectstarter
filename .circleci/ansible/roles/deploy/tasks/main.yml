@@ -5,4 +5,4 @@
     src: ./
 
 - name: "Start Server"
-  raw: cd ~/cdond-c3-projectstarter/backend/; npm install; pm2 start npm -- run start
+  raw: cd ~/cdond-c3-projectstarter/backend/; npm install; npm install ts-node; pm2 start npm -- run start
