@@ -391,7 +391,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # your code here
-            if $API_URL; then exit 0; else exit 1; fi
+            if curl -s $API_URL; then exit 0; else exit 1; fi
       - run:
           name: Frontend smoke test.
           command: |
