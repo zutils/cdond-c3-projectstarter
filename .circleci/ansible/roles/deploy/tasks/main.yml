@@ -4,5 +4,5 @@
     dest: /home/ubuntu/
     src: ./
 
-- name: "Start Server"
-  raw: cd /home/ubuntu/cdond-c3-projectstarter/backend/; sudo npm install; sudo npm install -g typescript ts-node; pm2 start npm -- run start
+#- name: "Start Server"
+#  raw: cd /home/ubuntu/cdond-c3-projectstarter/backend/; sudo npm install; sudo npm install -g typescript ts-#node; pm2 start npm -- run start
