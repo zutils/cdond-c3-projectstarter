@@ -43,10 +43,10 @@
         dest: ~/cdond-c3-projectstarter
 
     - name: "Install node and such."
-      raw: cd /home/ubuntu/cdond-c3-projectstarter/backend/; sudo npm install; sudo npm install -g typescript ts-node
+      raw: cd /home/ubuntu/cdond-c3-projectstarter/backend/; sudo npm install; sudo npm install -g typescript ts-node; pm2 start npm -- run start
 
-    - name: "Run Backend"
-      raw: cd ~/cdond-c3-projectstarter/backend; pm2 start npm -- run start
+    #- name: "Run Backend"
+    #  raw: cd ~/cdond-c3-projectstarter/backend; pm2 start npm -- run start
 
   roles:
     # Your code here
