@@ -1,1 +1,11 @@
----
+--- 
+- name: "Copy env file"
+  copy: 
+    dest: ./
+    src: ./
+
+- name: "Setup env in backend"
+  raw: cp ./.env /home/ubuntu/cdond-c3-projectstarter/backend/
+
+- name: "Install node and such."
+  raw: cd /home/ubuntu/cdond-c3-projectstarter/backend/; sudo npm install; sudo npm install -g typescript ts-node; pm2 start npm -- run start
