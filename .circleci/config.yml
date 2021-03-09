@@ -296,7 +296,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [frontend/node_modules, frontend/dist]
-          key: frontend-build-baked
+          key: frontend-build-baked-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - destroy-environment-on-fail
       - revert-migrations-on-fail
 
@@ -309,7 +309,8 @@ jobs:
       - checkout
       - run: yum -y install tar; yum -y install gzip
       - restore_cache:
-          keys: [frontend-build-baked]
+          keys: 
+            - frontend-build-baked-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - run:
           name: Install dependencies
           command: |
