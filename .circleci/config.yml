@@ -285,15 +285,11 @@ jobs:
       - checkout
       - run: npm --update install python3 npm
       - run:
-          name: Get backend url
+          name: Bake API_URL into front-end
           command: |
-            # your code here
             export BACKEND_IP="$(curl -H 'token: 7f92f427-54ab-40ca-878a-ff9f059d253a' --request GET https://api.memstash.io/values/BackendUrl)"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-      - run:
-          name: Bake API_URL into front-end
-          command: |
             npm install
             cd frontend
             npm i
