@@ -43,7 +43,7 @@
         dest: ~/cdond-c3-projectstarter
 
     - name: Upgrade packages
-      raw: cd backend; npm audit fix --audit-level=critical --force
+      raw: cd ~/cdond-c3-projectstarter/backend; npm audit fix --audit-level=critical --force
 
   roles:
     # Your code here
