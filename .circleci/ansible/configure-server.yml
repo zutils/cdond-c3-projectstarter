@@ -42,9 +42,6 @@
         repo: 'https://github.com/zutils/cdond-c3-projectstarter.git'
         dest: ~/cdond-c3-projectstarter
 
-    - name: Upgrade packages
-      raw: cd ~/cdond-c3-projectstarter/backend; npm audit fix --audit-level=critical --force
-
   roles:
     # Your code here
     - configure-server
